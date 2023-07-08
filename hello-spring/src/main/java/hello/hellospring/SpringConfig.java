@@ -6,7 +6,7 @@ import hello.hellospring.service.MemberService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Configuration // 구성정보 이용하여 스프링 빈 수동 등록
 public class SpringConfig {
 
     @Bean

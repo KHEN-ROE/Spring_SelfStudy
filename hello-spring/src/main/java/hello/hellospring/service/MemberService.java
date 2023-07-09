@@ -14,7 +14,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    @Autowired
+    @Autowired //@requiredArgs 로 바꿀 수 있음(lombok 추가하고)
     public MemberService(MemberRepository memberRepository) { // 외부에서 넣어준다. 이런 것을 의존관계 주입이라고 함
         this.memberRepository = memberRepository;
     }

@@ -13,7 +13,9 @@ public class HelloController {
     public String hello(Model model) {
         // model에 key, value 담아서 hello.html 뷰 리턴
         model.addAttribute("data", "hello!");
-        return "hello";
+        return "hello"; // 해당 요청을 처리하여 hello.html에 데이터를 담아서 클라이언트에게 리턴한다.
+                        // 따라서 클라이언트는 localhost:8080/hello 페이지에 가야 요청한 데이터를 볼 수 있다.
+
     }
 
     @GetMapping("hello-mvc")

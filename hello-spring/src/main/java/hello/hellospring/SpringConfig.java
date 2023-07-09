@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration // 구성정보 이용하여 스프링 빈 수동 등록
 public class SpringConfig {
 
-    @Bean
+    @Bean // 스프링 컨테이너에 스프링 빈 수동 등록
     public MemberService memberService() {
         return new MemberService(memberRepository());
     }

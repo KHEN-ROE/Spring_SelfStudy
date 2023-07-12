@@ -1,0 +1,20 @@
+spring: # 별도의 설정이 없으면 스프링부트는 메모리 모드로 h2 돌린다.
+#  datasource:
+#    url: jdbc:h2:mem:test
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password:
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#    properties:
+#      hibernate:
+##        show_sql: true // system.out? ??. ??? ??
+#        format_sql: true
+
+logging:
+  level:
+    org.hibernate.sql: debug # logger? ??
+    org.hibernate.type: trace # ??????? ??? ???.
+

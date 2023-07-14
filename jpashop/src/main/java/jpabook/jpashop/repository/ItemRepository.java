@@ -20,7 +20,7 @@ public class ItemRepository {
             em.persist(item);
         } else {
             // id있으면 merge(업데이트와 흡사)
-            em.merge(item);
+            Item merge = em.merge(item); // merge가 영속성 컨텍스트에서 관리되는 객체이고, item은 영속성 상태로 변하지 않는다
         }
     }
 

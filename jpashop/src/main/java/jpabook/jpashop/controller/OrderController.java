@@ -57,5 +57,6 @@ public class OrderController {
     public String cancelOrder(@PathVariable("ordrId") Long orderId) {
         orderService.cancelOrder(orderId);
         return "redirect:/orders";
+        // orderList가 안보이는 문제가 있다.
     }
 }

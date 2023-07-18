@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
+import org.springframework.boot.autoconfigure.batch.BatchDataSource;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -27,6 +29,7 @@ public class Order {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @BatchSize(size = 1000)
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 

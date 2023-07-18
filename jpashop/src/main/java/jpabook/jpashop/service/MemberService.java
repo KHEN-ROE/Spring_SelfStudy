@@ -5,6 +5,7 @@ import jpabook.jpashop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.dialect.IDialect;
 
 import java.util.List;
 
@@ -44,4 +45,11 @@ public class MemberService {
         return memberRepository.findOne(memberId);
     }
 
+    @Transactional
+    public void update(Long id, String name) {
+        Member member = memberRepository.findOne(id); // 변경감지 기능 사용. 영속 상태의 member의 이름을 바꿔준다.
+        // 그러면 스프링 aop가 동작한다. @Transactional 어노테이션에 의해서
+        // 트랜잭션 aop가 끝나는 시점에 커밋이 됨. 그때 jpa가 flush, commit을 함.
+        member.setName(name);
+    }
 }

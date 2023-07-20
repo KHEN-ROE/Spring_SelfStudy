@@ -5,12 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class MemberRepository {
+public class MemberRepositoryOld {
 
 //    @PersistenceContext // jpa가 제공하는 표준 어노테이션. 스프링부트를 사용하면 생성자 주입 방식으로 바꿀 수 있다.
     private final EntityManager em; // 스프링이 EntityManager 만들어서 주입해줌

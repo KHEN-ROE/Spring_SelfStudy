@@ -1,11 +1,11 @@
 package jpabook.jpashop.service;
 
 import jpabook.jpashop.domain.Member;
-import jpabook.jpashop.repository.MemberRepository;
+import jpabook.jpashop.repository.MemberRepositoryOld;
+import jpabook.jpashop.repository.order.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.dialect.IDialect;
 
 import java.util.List;
 
@@ -42,12 +42,12 @@ public class MemberService {
 
     // 회원 한 명 조회
     public Member findOne(Long memberId) {
-        return memberRepository.findOne(memberId);
+        return memberRepository.findById(memberId).get();
     }
 
     @Transactional
     public void update(Long id, String name) {
-        Member member = memberRepository.findOne(id); // 변경감지 기능 사용. 영속 상태의 member의 이름을 바꿔준다.
+        Member member = memberRepository.findById(id).get(); // 변경감지 기능 사용. 영속 상태의 member의 이름을 바꿔준다.
         // 그러면 스프링 aop가 동작한다. @Transactional 어노테이션에 의해서
         // 트랜잭션 aop가 끝나는 시점에 커밋이 됨. 그때 jpa가 flush, commit을 함.
         member.setName(name);

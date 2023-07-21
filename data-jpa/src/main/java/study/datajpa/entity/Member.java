@@ -18,6 +18,8 @@ public class Member {
     private String username;
     private int age;
 
+    // 멤버만 조회하면 team은 조회를 안 한다. 이때 team을 가짜 프록시 객체로 조회를 한다
+    // 실제로 team 데이터를 사용하는 시점에 team을 꺼내기 위한 sql이 별도로 실행된다.
     @ManyToOne(fetch = FetchType.LAZY) // 회원은 하나의 팀만 가진다.
     @JoinColumn(name = "team_id")
     private Team team;
@@ -38,6 +40,11 @@ public class Member {
         if (team != null) {
             changeTeam(team);
         }
+    }
+
+    public Member(String username, int age) {
+        this.username = username;
+        this.age = age;
     }
 
     // 세터 대신 수정 메서드 사용하는게 좋다

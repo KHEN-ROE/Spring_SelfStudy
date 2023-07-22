@@ -221,14 +221,100 @@ class MemberRepositoryTest {
         em.clear();
 
         //when
-        List<Member> members = memberRepository.findAll(); // select Member
+//        List<Member> members = memberRepository.findAll(); // Member만 db에서 가져온다. 이 때 team은 값이 없는 상태이므로 team 객체를 가져오지 않는다.
+//        List<Member> members = memberRepository.findMemberFetchJoin(); // N+1 문제를 페치조인으로 해결
+        List<Member> members = memberRepository.findAll(); // N+1 문제를 페치조인으로 해결
+
 
         for (Member member : members) {
             System.out.println("member = " + member.getUsername());
-            System.out.println("member.getTeam().getName() = " + member.getTeam().getName());
+            System.out.println("member.teamclass = " + member.getTeam().getClass()); // 여기서 team이 프록시 객체인 것을 확인할 수 있음(프록시 초기화라고 함)
+            System.out.println("member.getTeam().getName() = " + member.getTeam().getName()); // 이때 team을 가져오는 쿼리 실행. 
+            // 그러나 N + 1문제가 발생함 -> 페치조인으로 해결(프록시 객체가 아닌 진짜 객체 가져옴)
         }
-
-
     }
+
+    @Test
+    void queryHint() {
+        //given
+        Member member1 = memberRepository.save(new Member("member1", 10));
+        em.flush();
+        em.clear();
+
+        //when
+        Member findMember = memberRepository.findReadOnlyByUsername("member1"); // readOnly = true 하면 변경감지 체크를 안 한다
+        findMember.setUsername("member2");
+        
+        em.flush(); // 변경감지 기능 동작. 그러나 치명적인 단점이 있다
+                    // 변경감지를 하려면 원본이 있어야 한다. 그러니까 객체를 2개 관리해야 하는 것임. 메모리를 더 먹게 됨
+    }
+
+    @Test
+    void lock() {
+        //given
+        Member member1 = memberRepository.save(new Member("member1", 10));
+        em.flush();
+        em.clear();
+
+        //when
+        List<Member> result = memberRepository.findLockByUsername("member1");
+    }
+
+    @Test
+    public void callCustom() throws Exception {
+        List<Member> result = memberRepository.findMemberCustom();
+    }
+
+    @Test
+    public void projections() {
+        //given
+        Team teamA = new Team("teamA");
+        em.persist(teamA);
+
+        Member m1 = new Member("m1", 0, teamA);
+        Member m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+
+        em.flush();
+        em.clear();
+
+        //when
+//        List<UsernameOnly> result = memberRepository.findProjectionsByUsername("m1");
+//        List<UsernameOnlyDto> result = memberRepository.findProjectionsByUsername("m1");
+        List<NestedClosedProjections> result = memberRepository.findProjectionsByUsername("m1", NestedClosedProjections.class);
+
+
+        for (NestedClosedProjections nestedClosedProjections : result) {
+            String username = nestedClosedProjections.getUsername();
+            System.out.println("username = " + username);
+            String teamName = nestedClosedProjections.getTeam().getName();
+            System.out.println("teamName = " + teamName);
+        }
+    }
+
+    @Test
+    void nativeQuery() {
+        //given
+        Team teamA = new Team("teamA");
+        em.persist(teamA);
+
+        Member m1 = new Member("m1", 0, teamA);
+        Member m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+
+        em.flush();
+        em.clear();
+
+        //when
+        Page<MemberProjection> byNativeProjection = memberRepository.findByNativeProjection(PageRequest.of(0, 10));
+        List<MemberProjection> content = byNativeProjection.getContent();
+        for (MemberProjection memberProjection : content) {
+            System.out.println("memberProjection = " + memberProjection.getUsername());
+            System.out.println("memberProjection = " + memberProjection.getTeamName());
+        }
+    }
+
 
 }

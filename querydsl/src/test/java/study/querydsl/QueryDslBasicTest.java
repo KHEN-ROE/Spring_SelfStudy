@@ -12,16 +12,13 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 import study.querydsl.dto.MemberDto;
-import study.querydsl.dto.MemberSearchCondition;
 import study.querydsl.dto.QMemberDto;
 import study.querydsl.dto.UserDto;
 import study.querydsl.entity.Member;
 import study.querydsl.entity.QMember;
 import study.querydsl.entity.Team;
-import study.querydsl.repository.MemberJpaRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -41,6 +38,7 @@ public class QueryDslBasicTest {
 
     @PersistenceContext
     private EntityManager em;
+
     JPAQueryFactory queryFactory;
 
     @BeforeEach

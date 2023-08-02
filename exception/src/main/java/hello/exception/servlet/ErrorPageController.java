@@ -43,7 +43,4 @@ public class ErrorPageController {
         log.info("dispatchType={}", request.getDispatcherType());
         log.info("dispatcherType={}", request.getDispatcherType());
     }
-
-
-
 }

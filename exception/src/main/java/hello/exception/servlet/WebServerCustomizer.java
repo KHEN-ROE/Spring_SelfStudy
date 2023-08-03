@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 // 오류 페이지 커스터마이징
-@Component // 컴포넌트로 등록해야 동작함
+//@Component // 컴포넌트로 등록해야 동작함
 public class WebServerCustomizer implements WebServerFactoryCustomizer<ConfigurableWebServerFactory> {
     @Override
     public void customize(ConfigurableWebServerFactory factory) {
